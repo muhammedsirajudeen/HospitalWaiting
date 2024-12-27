@@ -10,6 +10,7 @@ import type { LinksFunction } from "@remix-run/node";
 import "./tailwind.css";
 import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
 import { AppSidebar } from "./components/app-sidebar";
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -39,10 +40,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
       <SidebarProvider  defaultOpen={false}>
       <AppSidebar />
-      <main>
-        <SidebarTrigger />
-        {children}
-      </main>
+      <GoogleOAuthProvider clientId="438157362561-eagtaniqu5jplrng8vie0emocjplos3t.apps.googleusercontent.com">
+        <main>
+          <SidebarTrigger />
+          {children}
+        </main>
+      </GoogleOAuthProvider>
     </SidebarProvider>
         <ScrollRestoration />
         <Scripts />

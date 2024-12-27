@@ -5,6 +5,8 @@ import { z } from "zod";
 // import { zfd } from "zod-form-data";
 import { Button } from "~/components/ui/button";
 import AuthService from "~/services/AuthService";
+import { CodeResponse, useGoogleLogin } from '@react-oauth/google';
+import axios from "axios";
 
 // Define your Zod schema
 const FormSchema = z.object({
@@ -34,6 +36,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (!result.success) {
       const errors=result.error.errors??[]
       const errorMessage:ErrorMessage={password:"",email:""} 
+      //setting it manually to the desired format
       for(const error of errors){
         if(error.path[0]==='password'){
             errorMessage['password']=error.message
@@ -57,7 +60,12 @@ export const action: ActionFunction = async ({ request }) => {
 export default function FormExample() {
   const actionData = useActionData<ErrorMessage>();
   console.log("the action data is",actionData)
-
+  const login = useGoogleLogin({
+    onSuccess: (codeResponse:CodeResponse) => {
+        console.log(codeResponse)
+    },
+    onError: (error) => console.log('Login Failed:', error)
+});
   return (
     <div className="w-screen h-screen flex flex-col justify-center items-center">
       {/* <h1>Form with Zod Validation</h1> */}
@@ -83,7 +91,7 @@ export default function FormExample() {
       </Form>
       <hr className="font-bolder w-3/4 bg-black mt-10" />
       <p className="mt-10 text-xs text-gray-600">or continue with google</p>
-      <button  className="mt-10 bg-white border border-hidden"  >
+      <button onClick={login}  className="mt-10 bg-white border border-hidden"  >
         <img src="/google.png"  alt="google login" />
       </button>
     </div>
