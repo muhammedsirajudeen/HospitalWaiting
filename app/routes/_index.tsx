@@ -1,4 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
+import { useNavigate } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 
 export const meta: MetaFunction = () => {
@@ -34,6 +35,7 @@ const CardsContent=[
 
 ]
 export default function Index() {
+  const navigate=useNavigate()
   return (
     <div className="flex h-auto w-screen items-center mt-20 justify-start flex-col p-1">
       {/* top card */}
@@ -83,7 +85,7 @@ export default function Index() {
         <h1 className="w-96 text-center mt-4 text-cardcolortext-blue font-bold outfit-card-custom" >our doctors and clinics have earned over 5,000+ reviews on google!</h1>
       </div>
       {/* button */}
-          <Button variant={"ghost"} className="border-2 border-cardcolorprimary rounded-3xl m-4">
+          <Button onClick={()=>navigate('/login')} variant={"ghost"} className="border-2 border-cardcolorprimary rounded-3xl m-4">
             <div className="h-3 rounded-full w-3 bg-green-950"></div>
             <p className="text-cardcolortext-blue" >Explore</p>
           </Button>
